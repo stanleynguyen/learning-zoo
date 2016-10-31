@@ -25,3 +25,9 @@ git push --set-upstream origin <your-branch-name>
 and start coding. When you are almost done, go to GitHub and [create a Pull Request](https://help.github.com/articles/creating-a-pull-request/) so everyone can review the code and discuss then merge.
 
 Happy coding!!
+
+###Useful Links
+
+* [User Story](docs/USERSTORY.md)
+* [Sprint Planning](docs/SPRINTPLANNING.md)
+* [Android Style Guide](https://github.com/ribot/android-guidelines)
