@@ -1,24 +1,33 @@
-# README
+#LEARNING ZOO
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+An in-class understanding tracking system
 
-Things you may want to cover:
+###Problem we're trying to tackle:
+- Students are sometimes too shy to voice their uncertainties over concepts that are taught in lecture
+- Students as questions that majority of the class already captured, which wastes the class and lecturer's time
+- Lecturers have no way to get analytics on whether their lessons are interesting, well-paced, easy to understand
 
-* Ruby version
+###Getting started
 
-* System dependencies
+Clone the repositories
 
-* Configuration
+```
+git clone git@github.com:stanleynguyen/learning-zoo.git
+```
 
-* Database creation
+Create a new branch with understandable name and create an upstream tracking branch on GitHub
 
-* Database initialization
+```
+git checkout -b <explanatory-branch-name>
+git push --set-upstream origin <your-branch-name>
+```
 
-* How to run the test suite
+and start coding. When you are almost done, go to GitHub and [create a Pull Request](https://help.github.com/articles/creating-a-pull-request/) so everyone can review the code and discuss then merge.
 
-* Services (job queues, cache servers, search engines, etc.)
+Happy coding!!
 
-* Deployment instructions
+###Useful Links
 
-* ...
+* [User Story](docs/USERSTORY.md)
+* [Sprint Planning](docs/SPRINTPLANNING.md)
+* [Android Style Guide](https://github.com/ribot/android-guidelines)
