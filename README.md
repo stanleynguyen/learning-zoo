@@ -28,6 +28,6 @@ Happy coding!!
 
 ###Useful Links
 
-* [User Story](docs/USERSTORY.md)
-* [Sprint Planning](docs/SPRINTPLANNING.md)
+* [User Story](docs/userstory.md)
+* [Sprint Planning](docs/sprintplanning.md)
 * [Android Style Guide](https://github.com/ribot/android-guidelines)
