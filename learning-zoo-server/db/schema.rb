@@ -10,10 +10,33 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20161106060407) do
+ActiveRecord::Schema.define(version: 20161108020223) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "sessions", force: :cascade do |t|
+    t.string  "name",            default: "", null: false
+    t.string  "time"
+    t.string  "lecturer_name",   default: "", null: false
+    t.integer "current_slide",   default: 0,  null: false
+    t.string  "classroom"
+    t.jsonb   "slides_sequence"
+    t.integer "subject_id"
+    t.index ["classroom"], name: "index_sessions_on_classroom", using: :btree
+    t.index ["subject_id"], name: "index_sessions_on_subject_id", using: :btree
+  end
+
+  create_table "subjects", force: :cascade do |t|
+    t.string "name", default: "", null: false
+  end
+
+  create_table "topics", force: :cascade do |t|
+    t.string  "name",        default: "", null: false
+    t.integer "start_slide"
+    t.integer "end_slide"
+    t.integer "std_unclear", default: 0,  null: false
+  end
 
   create_table "users", force: :cascade do |t|
     t.string   "provider",               default: "email", null: false
@@ -39,9 +62,13 @@ ActiveRecord::Schema.define(version: 20161106060407) do
     t.string   "staff_id",               default: "",      null: false
     t.datetime "created_at",                               null: false
     t.datetime "updated_at",                               null: false
+    t.integer  "subject_id"
     t.index ["email"], name: "index_users_on_email", using: :btree
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true, using: :btree
+    t.index ["subject_id"], name: "index_users_on_subject_id", using: :btree
     t.index ["uid", "provider"], name: "index_users_on_uid_and_provider", unique: true, using: :btree
   end
 
+  add_foreign_key "sessions", "subjects"
+  add_foreign_key "users", "subjects"
 end
