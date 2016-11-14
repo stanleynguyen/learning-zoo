@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="42dp">
+
+        <android.support.design.widget.TextInputEditText
+            android:inputType="textEmailAddress"
+            android:id="@+id/input_email"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_email"
+            android:layout_above="@+id/input_password"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+
+    </android.support.design.widget.TextInputLayout>
+
+    <android.support.design.widget.TextInputLayout
+        android:id="@+id/input_layout_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/input_layout_email"
+        android:layout_alignLeft="@+id/input_layout_email"
+        android:layout_alignStart="@+id/input_layout_email" >
+
+        <android.support.design.widget.TextInputEditText
+            android:inputType="textPassword"
+            android:id="@+id/input_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/hint_password"
+            android:layout_above="@+id/login"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            />
+
+    </android.support.design.widget.TextInputLayout>
+
+
+
+    <Button style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:id="@+id/login"
+        android:layout_marginLeft="68dp"
+        android:layout_marginStart="68dp"
+        android:onClick="validateLogin"
+        android:layout_centerVertical="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <Button style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/signup"
+        android:id="@+id/signup"
+        android:onClick="toRegister"
+        android:layout_alignTop="@+id/login"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginRight="68dp"
+        android:layout_marginEnd="68dp" />
+
+
+</RelativeLayout>
