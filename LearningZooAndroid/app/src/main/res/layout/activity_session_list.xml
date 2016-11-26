@@ -3,12 +3,15 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context="sutd.learningzooandroid.SessionListActivity">
 
     <include
         layout="@layout/toolbar"
         android:id="@+id/include1" />
     <ListView
+        android:paddingStart="16dp"
+        android:paddingEnd="16dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/listView"

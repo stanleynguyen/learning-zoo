@@ -27,6 +27,7 @@
     <string name="login">Login</string>
     <string name="signup">Register</string>
     <string name="hint_subjectid">Subject ID</string>
+    <string name="session">Subject sessions</string>
 
 
 </resources>

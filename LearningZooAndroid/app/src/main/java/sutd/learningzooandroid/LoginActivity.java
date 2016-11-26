@@ -16,6 +16,11 @@ import com.loopj.android.http.RequestParams;
 
 import org.json.JSONObject;
 
+import java.util.List;
+
+import cz.msebera.android.httpclient.client.CookieStore;
+import cz.msebera.android.httpclient.cookie.Cookie;
+
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -35,23 +40,28 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(regis);
     }
 
-    public void storeCookie(){
-        Client.storeCookie(getApplicationContext()); //not sure if I did this right either
-    }
+
 
     public void validateLogin(View v){
 
         RequestParams params = new RequestParams();
         params.put("email",email.getText().toString());
         params.put("password",password.getText().toString());
-        final ClientUsage login = new ClientUsage();
-        login.getLoginHeaders(params,new OnJSONResponseCallback(){
+        ClientUsage login = ClientUsage.getClientUsage();
+        login.getCookieStore(this); //store the cookiessss
+
+        CookieStore cookiez = login.getCookieStore(getApplicationContext());
+        List<Cookie> cookieList = cookiez.getCookies();
+        for(Cookie cook: cookieList){
+            System.out.println(cook.getValue());
+        }
+
+        login.postLoginHeaders(params,new OnJSONResponseCallback(){
         @Override
             public void onJSONResponse(boolean success, JSONObject response){ //waits for a response before executing login logic
-            if (login.getConfirmation()) {
+            if (success) {
                 Intent switchView = new Intent(getBaseContext(),SessionListActivity.class); //used base context for shortcut.
                 startActivity(switchView);
-                //storeCookie(); //test this
             }
             else{
                 Toast.makeText(getApplicationContext(),"Wrong email or password",Toast.LENGTH_SHORT).show();
