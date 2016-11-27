@@ -40,8 +40,6 @@ public class LoginActivity extends AppCompatActivity {
         startActivity(regis);
     }
 
-
-
     public void validateLogin(View v){
 
         RequestParams params = new RequestParams();
@@ -78,8 +76,6 @@ public class LoginActivity extends AppCompatActivity {
 //
 //        }
 //    }
-
-
 //    public void validateLogin(View v) {
 //        final TextView mTextView = (TextView) findViewById(R.id.mTextView);
 //

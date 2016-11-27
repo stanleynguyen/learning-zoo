@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -25,10 +26,15 @@ import cz.msebera.android.httpclient.client.protocol.ClientContext;
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.protocol.HttpContext;
 
+//TODO: Add a filter that uses the subject_id of the instructor to filter the information automatically
+//TODO: Also add a manual filter for people who to search faster.
+
 public class SessionListActivity extends AppCompatActivity {
 
     protected ListView listView;
     protected ArrayList<Cookie> cookieList;
+    ArrayList<String> listItems = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,14 +42,12 @@ public class SessionListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_session_list);
         listView = (ListView)findViewById(R.id.listView);
         //getSession();
-        updateList(listView,"0");
+
+        createList(listView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.include1);
         setSupportActionBar(toolbar);
         //toolbar.setLogo(R.drawable.ic_cached_black_24dp);
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -65,21 +69,10 @@ public class SessionListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
-    public void updateList(View v,String id1) {
-        ArrayList<String> listItems = new ArrayList<String>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.item_session,listItems);
-
-        listItems.add("Dijkstra's Algorithm");
-        listItems.add("Android Programming");
-        listItems.add("Computer Memory");
-        listItems.add("Weka");
-        //listItems.add(id1);
+    public void createList(View v){
+        adapter = new ArrayAdapter<String>(this,R.layout.item_session,listItems);
         listView.setAdapter(adapter);
-
         final SessionListActivity _this = this;
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -89,25 +82,35 @@ public class SessionListActivity extends AppCompatActivity {
         });
     }
 
+    public void updateList(View v,String id1) {
+
+        listItems.add("Dijkstra's Algorithm");
+        listItems.add("Android Programming");
+        listItems.add("Computer Memory");
+        listItems.add("Weka");
+        if(id1 != null) {
+            listItems.add(id1);
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
     public void toIndividualSession(){
         Intent toIndividual = new Intent(this,IndividualSessionActivity.class);
         startActivity(toIndividual);
     }
 
     public void getSessions(View v){
-        //What am I trying to do here?
-        //Get sessions only for that subject id which is passed through the cookie
 
         final int id; //change id later on
         RequestParams params = new RequestParams();
         //params.put("id",id);
         ClientUsage allSessions = ClientUsage.getClientUsage();
-        allSessions.getAllSessions(params,new OnJSONResponseCallback(){
+        allSessions.getAllSessions(params,new OnJSONArrayResponseCallback(){
             @Override
-            public void onJSONResponse(boolean success, JSONObject response){ //waits for a response before executing login logic
+            public void onJSONArrayResponse(boolean success, JSONArray response){ //waits for a response before executing login logic
                 if (success) {
                     updateList(listView,"Dynamic Programming");
-                    recreate();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Unable to refresh sessions at the moment",Toast.LENGTH_SHORT).show();
@@ -115,6 +118,4 @@ public class SessionListActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }
