@@ -3,6 +3,7 @@ package sutd.learningzooandroid;
 
 import android.content.Context;
 
+import com.jjoe64.graphview.series.DataPoint;
 import com.loopj.android.http.*;
 
 import org.json.*;
@@ -52,6 +53,7 @@ class ClientUsage {
     private static ClientUsage instance = null;
     private static int subject_id;
     private static int session_id;
+    private static DataPoint[] dataPointList;
     public static ClientUsage getClientUsage(){ //one for the whole thing
         if (instance==null){
             instance = new ClientUsage();
@@ -72,6 +74,14 @@ class ClientUsage {
     }
     public int getSessionId(){
         return session_id;
+    }
+
+    public void storeDataPointArray(DataPoint[] pointList){
+        dataPointList = pointList;
+    }
+
+    public DataPoint[] getDataPointArray(){
+        return dataPointList;
     }
 
     private ClientUsage(){
@@ -171,8 +181,9 @@ class ClientUsage {
         });
     }
 
-    public void getTopicsForSession(RequestParams params,int sid, final OnJSONArrayResponseCallback callback) {
-        String url = "/" + String.valueOf(sid) + "/get_topics";
+    public void getTopicsForSession(RequestParams params, final OnJSONArrayResponseCallback callback) {
+        String url = "/" + String.valueOf(getSessionId()) + "/get_topics";
+        System.out.println("/sessions" + url);
         Client.get("/sessions"+url, params, new JsonHttpResponseHandler() { // change this later.
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response){
@@ -182,14 +193,15 @@ class ClientUsage {
                 }
                 catch(Exception e){
                     System.out.println(e);
-                    System.out.println("Could not get sessions");
+                    System.out.println("Could not get topics");
                 }
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONArray response) {
+            public void onFailure(int statusCode, Header[] headers,String e, Throwable cake) {
                 try {
-                    callback.onJSONArrayResponse(false, response);
+                    JSONArray jArray = new JSONArray();
+                    callback.onJSONArrayResponse(false, jArray);
                 }
                 catch(Exception e1){
                     System.out.println("Failed to get response from server");

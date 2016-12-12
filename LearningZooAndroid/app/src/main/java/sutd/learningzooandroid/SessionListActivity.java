@@ -29,9 +29,6 @@ import cz.msebera.android.httpclient.client.protocol.ClientContext;
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.protocol.HttpContext;
 
-//TODO: Add a filter that uses the subject_id of the instructor to filter the information automatically
-//TODO: Also add a manual filter for people who to search faster.
-
 public class SessionListActivity extends AppCompatActivity {
 
     protected ListView listView;
@@ -48,7 +45,7 @@ public class SessionListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_session_list);
         listView = (ListView)findViewById(R.id.listView);
         createList(listView);
-//TODO WHY THIS DUN WORKZ
+        getSessions(listView);
         Toolbar toolbar = (Toolbar) findViewById(R.id.include1);
         setSupportActionBar(toolbar);
         //toolbar.setLogo(R.drawable.ic_cached_black_24dp);
@@ -85,7 +82,7 @@ public class SessionListActivity extends AppCompatActivity {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(_this,"position: " + position, Toast.LENGTH_SHORT).show();
                 ClientUsage idSet = ClientUsage.getClientUsage();
-                idSet.setSessionId(position); //check if index starts 1
+                idSet.setSessionId(sessionTabKeeper.get(position)); //check if index starts 1
 
                 toIndividualSession();
             }
