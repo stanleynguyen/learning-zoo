@@ -8,7 +8,15 @@
     android:paddingEnd="16dp"
     tools:context=".LoginActivity">
 
+    <ImageView
+        android:layout_marginTop="30dp"
+        android:id="@+id/main_logo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/learning_zoo_logo_mdpi"/>
+
     <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/main_logo"
         android:id="@+id/input_layout_email"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,6 +59,7 @@
 
 
     <Button style="@style/Widget.AppCompat.Button.Colored"
+        android:layout_below="@+id/input_layout_password"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/login"

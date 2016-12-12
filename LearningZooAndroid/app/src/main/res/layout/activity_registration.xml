@@ -9,8 +9,15 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="sutd.learningzooandroid.RegistrationActivity">
 
+    <ImageView
+        android:id="@+id/main_logo"
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:src="@drawable/learning_zoo_logo"/>
+
 
     <android.support.design.widget.TextInputLayout
+        android:layout_below="@+id/main_logo"
         android:id="@+id/reg_email_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
