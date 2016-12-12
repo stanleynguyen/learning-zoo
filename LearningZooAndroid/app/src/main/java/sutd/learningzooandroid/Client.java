@@ -2,10 +2,6 @@ package sutd.learningzooandroid;
 
 
 import android.content.Context;
-import android.content.Intent;
-import android.os.AsyncTask;
-import android.util.Log;
-
 
 import com.loopj.android.http.*;
 
@@ -16,6 +12,7 @@ import java.net.URL;
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.cookie.Cookie;
+import cz.msebera.android.httpclient.io.SessionOutputBuffer;
 
 public class Client {
     private static PersistentCookieStore myCookieStore = null;
@@ -53,6 +50,7 @@ public class Client {
 
 class ClientUsage {
     private static ClientUsage instance = null;
+    private static int subject_id;
     public static ClientUsage getClientUsage(){ //one for the whole thing
         if (instance==null){
             instance = new ClientUsage();
@@ -60,8 +58,15 @@ class ClientUsage {
         return instance;
     }
 
-    private ClientUsage(){
+    private void setSubjectId(int sid){
+        subject_id = sid;
+    }
 
+    public int getSubjectId(){
+        return subject_id;
+    }
+
+    private ClientUsage(){
     }
 
     public PersistentCookieStore getCookieStore(Context context){
@@ -75,14 +80,16 @@ class ClientUsage {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If the response is JSONObject instead of expected JSONArray
                 try {
-
+                    System.out.println(response.getJSONObject("data").getInt("subject_id")); //wow this is damn stupid.
                     callback.onJSONResponse(true, response);
+
+                    setSubjectId(response.getJSONObject("data").getInt("subject_id"));
                     System.out.println("Successfully logged in");
                     System.out.println(response.toString());
                     //Client.storeCookie()
                 }
                 catch(Exception e1){
-                    System.out.println("Who am I kidding?");
+                    System.out.println("???");
                 }
 
             }
@@ -132,26 +139,37 @@ class ClientUsage {
 
     }
 
-    public void getAllSessions(RequestParams params,final OnJSONResponseCallback callback) {
+    public void getAllSessions(RequestParams params,final OnJSONArrayResponseCallback callback) {
 
-        Client.get("/topics", params, new JsonHttpResponseHandler() { // change this later.
+        Client.get("/sessions/35/get_topics", params, new JsonHttpResponseHandler() { // change this later.
             @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // If the response is JSONObject instead of expected JSONArray
-                try {
-                    callback.onJSONResponse(true, response);
-                    System.out.println("Retrieved topics!");
-                    System.out.println(response.toString());
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response){
+                try{
+                    callback.onJSONArrayResponse(true,response);
+                    System.out.println("Retrieved sessions!");
                 }
-                catch(Exception e1){
-                    System.out.println("Who am I kidding?");
+                catch(Exception e){
+                    System.out.println(e);
+                    System.out.println("Could not get sessions");
                 }
-
             }
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+//                // If the response is JSONObject instead of expected JSONArray
+//                try {
+//                    callback.onJSONResponse(true, response);
+//                    System.out.println("Retrieved topics!");
+//                    System.out.println(response.toString());
+//                }
+//                catch(Exception e1){
+//                    System.out.println("Who am I kidding?");
+//                }
+//
+//            }
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONArray response) {
                 try {
-                    callback.onJSONResponse(false, response);
+                    callback.onJSONArrayResponse(false, response);
                 }
                 catch(Exception e1){
                     System.out.println("Failed to get response from server");
