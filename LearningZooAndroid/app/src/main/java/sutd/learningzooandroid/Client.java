@@ -115,7 +115,6 @@ class ClientUsage {
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 // If the response is JSONObject instead of expected JSONArray
                 try{
-
                     callback.onJSONResponse(true,response);
                     System.out.println(response.toString());
                     System.out.println("Succeeded at registering user!");
@@ -126,9 +125,11 @@ class ClientUsage {
 
             }
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONObject response) {
+            public void onFailure(int statusCode, Header[] headers,String response, Throwable e) {
                 try {
-                    callback.onJSONResponse(false, response);
+                    JSONObject jObj = new JSONObject();
+
+                    callback.onJSONResponse(false, jObj);
                 }
                 catch(Exception e1){
                     System.out.println("Failed to get response from server");
@@ -144,8 +145,8 @@ class ClientUsage {
         Client.get("/sessions/35/get_topics", params, new JsonHttpResponseHandler() { // change this later.
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response){
-                try{
-                    callback.onJSONArrayResponse(true,response);
+                try {
+                    callback.onJSONArrayResponse(true, response);
                     System.out.println("Retrieved sessions!");
                 }
                 catch(Exception e){

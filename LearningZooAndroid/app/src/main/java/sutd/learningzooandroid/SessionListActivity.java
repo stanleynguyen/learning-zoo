@@ -17,36 +17,44 @@ import com.loopj.android.http.PersistentCookieStore;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+
 import org.json.JSONException;
+
 import org.json.JSONObject;
 
 import java.util.ArrayList;
-import java.util.Random;
 
 import cz.msebera.android.httpclient.client.CookieStore;
 import cz.msebera.android.httpclient.client.protocol.ClientContext;
 import cz.msebera.android.httpclient.cookie.Cookie;
 import cz.msebera.android.httpclient.protocol.HttpContext;
 
+//TODO: Add a filter that uses the subject_id of the instructor to filter the information automatically
+//TODO: Also add a manual filter for people who to search faster.
+
 public class SessionListActivity extends AppCompatActivity {
 
     protected ListView listView;
     protected ArrayList<Cookie> cookieList;
+
     protected ArrayList<String> updates = new ArrayList<String>();
-    protected JSONArray filteredJSONArray;
+
+    ArrayList<String> listItems = new ArrayList<String>();
+    ArrayAdapter<String> adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_list);
         listView = (ListView)findViewById(R.id.listView);
         //getSession();
+
+        createList(listView);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.include1);
         setSupportActionBar(toolbar);
         //toolbar.setLogo(R.drawable.ic_cached_black_24dp);
-
-
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -69,29 +77,30 @@ public class SessionListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
-
     public void updateList(View v) {
 
         ArrayList<String> listItems = new ArrayList<String>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,R.layout.item_session,listItems);
-        for (String topic: updates){
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_session, listItems);
+        for (String topic : updates) {
             listItems.add(topic);
 //            updates.remove(topic);
         }
 
-        for(String test: listItems){
+        for (String test : listItems) {
             System.out.println("Test: " + test);
         }
+    }
 //        listItems.add("Dijkstra's Algorithm");
 //        listItems.add("Android Programming");
 //        listItems.add("Computer Memory");
 //        listItems.add("Weka");
 
+
+    public void createList(View v){
+        adapter = new ArrayAdapter<String>(this,R.layout.item_session,listItems);
+
         listView.setAdapter(adapter);
-
         final SessionListActivity _this = this;
-
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -101,26 +110,42 @@ public class SessionListActivity extends AppCompatActivity {
         });
     }
 
+    public void updateList(View v,String id1) {
+
+        listItems.add("Dijkstra's Algorithm");
+        listItems.add("Android Programming");
+        listItems.add("Computer Memory");
+        listItems.add("Weka");
+        if(id1 != null) {
+            listItems.add(id1);
+        }
+        adapter.notifyDataSetChanged();
+
+    }
+
     public void toIndividualSession(){
         Intent toIndividual = new Intent(this,IndividualSessionActivity.class);
         startActivity(toIndividual);
     }
 
     public void getSessions(View v){
+
         //What am I trying to do here?
         //Get sessions only for that subject id which is passed through the cookie
         //GET ALL SESSIONS -> COMPARE SUBJECT ID TO SESSION SUBJECT ID, IF MATCH -> APPEND THEN QUERY FOR EACH SESSION
         //GET SESSIONS RELATED TO SUBJECT ID? -> USE QUERY TO GET ALL TOPICS RELATED TO SESSION -> PLOT ALL TOPICS ON GRAPH
 
+
         RequestParams params = new RequestParams();
         ClientUsage allSessions = ClientUsage.getClientUsage();
+
         final int id = allSessions.getSubjectId(); //checks subject id, not session id take note!
         final PersistentCookieStore cookiez = allSessions.getCookieStore(getBaseContext()); //check if need to use a different context
+
         allSessions.getAllSessions(params,new OnJSONArrayResponseCallback(){
             @Override
             public void onJSONArrayResponse(boolean success, JSONArray response){ //waits for a response before executing login logic
                 if (success) {
-
                     for(int i=0;i<response.length();i++){
                         try {
                             JSONObject data = response.getJSONObject(i);
@@ -145,6 +170,7 @@ public class SessionListActivity extends AppCompatActivity {
 //                    updateList(listView,"Dynamic Programming");
 //                    recreate();
                 }// works up to here
+
                 else{
                     Toast.makeText(getApplicationContext(),"Unable to refresh sessions at the moment",Toast.LENGTH_SHORT).show();
                 }
@@ -156,8 +182,5 @@ public class SessionListActivity extends AppCompatActivity {
         updateList(listView);
         recreate();
     }
-
-
-
 
 }
