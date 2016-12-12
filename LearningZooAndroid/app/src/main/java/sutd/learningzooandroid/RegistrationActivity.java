@@ -48,4 +48,9 @@ public class RegistrationActivity extends AppCompatActivity {
         });
     }
     //fields required for user sign_up: email, password, subject_id
+
+    public void toLogin(View v) {
+        Intent login = new Intent(this,LoginActivity.class);
+        startActivity(login);
+    }
 }
