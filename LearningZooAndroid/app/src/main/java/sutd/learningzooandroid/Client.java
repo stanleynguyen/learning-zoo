@@ -51,6 +51,7 @@ public class Client {
 class ClientUsage {
     private static ClientUsage instance = null;
     private static int subject_id;
+    private static int session_id;
     public static ClientUsage getClientUsage(){ //one for the whole thing
         if (instance==null){
             instance = new ClientUsage();
@@ -64,6 +65,13 @@ class ClientUsage {
 
     public int getSubjectId(){
         return subject_id;
+    }
+
+    public void setSessionId(int sid){
+        session_id = sid;
+    }
+    public int getSessionId(){
+        return session_id;
     }
 
     private ClientUsage(){
@@ -104,7 +112,6 @@ class ClientUsage {
             }
         });
 
-
     }
 
     public void registerTeacher(RequestParams params,final OnJSONResponseCallback callback){
@@ -125,11 +132,10 @@ class ClientUsage {
 
             }
             @Override
-            public void onFailure(int statusCode, Header[] headers,String response, Throwable e) {
+            public void onFailure(int statusCode, Header[] headers, Throwable e,JSONObject response) {
                 try {
-                    JSONObject jObj = new JSONObject();
-
-                    callback.onJSONResponse(false, jObj);
+                    callback.onJSONResponse(false, response);
+                    System.out.println(response);
                 }
                 catch(Exception e1){
                     System.out.println("Failed to get response from server");
@@ -142,31 +148,44 @@ class ClientUsage {
 
     public void getAllSessions(RequestParams params,final OnJSONArrayResponseCallback callback) {
 
-        Client.get("/sessions/35/get_topics", params, new JsonHttpResponseHandler() { // change this later.
+        Client.get("/sessions", params, new JsonHttpResponseHandler() { // change this later.
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    callback.onJSONArrayResponse(true, response);
+                    System.out.println("Retrieved sessions!");
+                } catch (Exception e) {
+                    System.out.println(e);
+                    System.out.println("Could not get sessions");
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable e, JSONArray response) {
+                try {
+                    callback.onJSONArrayResponse(false, response);
+                } catch (Exception e1) {
+                    System.out.println("Failed to get response from server");
+                }
+            }
+        });
+    }
+
+    public void getTopicsForSession(RequestParams params,int sid, final OnJSONArrayResponseCallback callback) {
+        String url = "/" + String.valueOf(sid) + "/get_topics";
+        Client.get("/sessions"+url, params, new JsonHttpResponseHandler() { // change this later.
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response){
                 try {
                     callback.onJSONArrayResponse(true, response);
-                    System.out.println("Retrieved sessions!");
+                    System.out.println("Retrieved topics!");
                 }
                 catch(Exception e){
                     System.out.println(e);
                     System.out.println("Could not get sessions");
                 }
             }
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                // If the response is JSONObject instead of expected JSONArray
-//                try {
-//                    callback.onJSONResponse(true, response);
-//                    System.out.println("Retrieved topics!");
-//                    System.out.println(response.toString());
-//                }
-//                catch(Exception e1){
-//                    System.out.println("Who am I kidding?");
-//                }
-//
-//            }
+
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable e, JSONArray response) {
                 try {
@@ -177,7 +196,6 @@ class ClientUsage {
                 }
             }
         });
-
 
     }
 

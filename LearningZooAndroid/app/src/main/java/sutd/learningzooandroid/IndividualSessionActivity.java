@@ -14,6 +14,7 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 import com.loopj.android.http.RequestParams;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
@@ -27,39 +28,49 @@ public class IndividualSessionActivity extends AppCompatActivity {
 
     protected GraphView graph;
     protected ArrayList<String> topics = new ArrayList<String>();
+
+    protected ArrayList<Integer> topicCounter = new ArrayList<Integer>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_session);
         graph = (GraphView) findViewById(R.id.includegraph);
-        getGraphInfo(1);
+        getGraphInfo();
         plotGraph(graph);
     }
 
-    public void getGraphInfo(int id){
+    public void getGraphInfo(){
         RequestParams params = new RequestParams();
         ClientUsage grapher = ClientUsage.getClientUsage();
-        CookieStore cookiez = grapher.getCookieStore(getApplicationContext());
-        List<Cookie> cookieList = cookiez.getCookies();
-        for(Cookie cook: cookieList){
-            System.out.println(cook.getValue());
-        }
-
-
-        params.put("topic",id);
-        grapher.getPlotData(params, new OnJSONResponseCallback() {
+        int sid = grapher.getSessionId();
+        grapher.getTopicsForSession(params, sid, new OnJSONArrayResponseCallback() {
             @Override
-            public void onJSONResponse(boolean success, JSONObject response) {
+            public void onJSONArrayResponse(boolean success, JSONArray response) {
                 if(success){
+                    DataPoint[] dataPointList = new DataPoint[response.length()];
                     //topics = response.topic; append all the topics to the arraylist
+                    for (int i=0;i<response.length();i++) {
+                        try {
+
+                            JSONObject data = response.getJSONObject(i);
+                            topicCounter.add(i);
+                            topics.add(data.getString("name"));
+                            int buttonPress = data.getInt("std_unclear");
+
+                            dataPointList[i] = (new DataPoint(i,buttonPress));
+                        }
+                        catch(Exception e){
+                            System.out.println(e);
+                        }
+                    }
                     plotGraph(findViewById(R.id.graph)); //add arraylist argument later.
-                    recreate();
                 }
                 else{
                     Toast.makeText(getApplicationContext(),"Unable to get graph info for plot",Toast.LENGTH_SHORT).show();
                 }
             }
         });
+
     }
 
     public void plotGraph(View v){ //change argument to accept an arraylist later on.
@@ -67,9 +78,10 @@ public class IndividualSessionActivity extends AppCompatActivity {
         graph.getGridLabelRenderer().setHorizontalAxisTitle("Topic");
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setMinX(0.0);
-        graph.getViewport().setMaxX(3.0);
+        graph.getViewport().setMaxX(20.0);
 
-        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(new DataPoint[] {
+        BarGraphSeries<DataPoint> series = new BarGraphSeries<>(
+        new DataPoint[] {
                 new DataPoint(0, 1),
                 new DataPoint(1, 5),
                 new DataPoint(2, 3)
@@ -82,9 +94,7 @@ public class IndividualSessionActivity extends AppCompatActivity {
         });
 
         series.setSpacing(50);
-
         graph.addSeries(series);
-
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
             @Override

@@ -37,7 +37,7 @@ public class SessionListActivity extends AppCompatActivity {
     protected ListView listView;
     protected ArrayList<Cookie> cookieList;
 
-    protected ArrayList<String> updates = new ArrayList<String>();
+    protected ArrayList<Integer> sessionTabKeeper = new ArrayList<Integer>();
 
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
@@ -47,10 +47,8 @@ public class SessionListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_session_list);
         listView = (ListView)findViewById(R.id.listView);
-        //getSession();
-
         createList(listView);
-
+//TODO WHY THIS DUN WORKZ
         Toolbar toolbar = (Toolbar) findViewById(R.id.include1);
         setSupportActionBar(toolbar);
         //toolbar.setLogo(R.drawable.ic_cached_black_24dp);
@@ -77,25 +75,6 @@ public class SessionListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    public void updateList(View v) {
-
-        ArrayList<String> listItems = new ArrayList<String>();
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.item_session, listItems);
-        for (String topic : updates) {
-            listItems.add(topic);
-//            updates.remove(topic);
-        }
-
-        for (String test : listItems) {
-            System.out.println("Test: " + test);
-        }
-    }
-//        listItems.add("Dijkstra's Algorithm");
-//        listItems.add("Android Programming");
-//        listItems.add("Computer Memory");
-//        listItems.add("Weka");
-
-
     public void createList(View v){
         adapter = new ArrayAdapter<String>(this,R.layout.item_session,listItems);
 
@@ -105,23 +84,14 @@ public class SessionListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 //Toast.makeText(_this,"position: " + position, Toast.LENGTH_SHORT).show();
+                ClientUsage idSet = ClientUsage.getClientUsage();
+                idSet.setSessionId(position); //check if index starts 1
+
                 toIndividualSession();
             }
         });
     }
 
-    public void updateList(View v,String id1) {
-
-        listItems.add("Dijkstra's Algorithm");
-        listItems.add("Android Programming");
-        listItems.add("Computer Memory");
-        listItems.add("Weka");
-        if(id1 != null) {
-            listItems.add(id1);
-        }
-        adapter.notifyDataSetChanged();
-
-    }
 
     public void toIndividualSession(){
         Intent toIndividual = new Intent(this,IndividualSessionActivity.class);
@@ -129,13 +99,7 @@ public class SessionListActivity extends AppCompatActivity {
     }
 
     public void getSessions(View v){
-
-        //What am I trying to do here?
-        //Get sessions only for that subject id which is passed through the cookie
-        //GET ALL SESSIONS -> COMPARE SUBJECT ID TO SESSION SUBJECT ID, IF MATCH -> APPEND THEN QUERY FOR EACH SESSION
-        //GET SESSIONS RELATED TO SUBJECT ID? -> USE QUERY TO GET ALL TOPICS RELATED TO SESSION -> PLOT ALL TOPICS ON GRAPH
-
-
+        listItems.clear();
         RequestParams params = new RequestParams();
         ClientUsage allSessions = ClientUsage.getClientUsage();
 
@@ -149,16 +113,17 @@ public class SessionListActivity extends AppCompatActivity {
                     for(int i=0;i<response.length();i++){
                         try {
                             JSONObject data = response.getJSONObject(i);
-                            System.out.println(data.toString());
+                            //System.out.println(data.toString());
                             //System.out.println(data.getInt("subject_id"));
-                            System.out.println(id);
+                            //System.out.println(id);
 
-//                            System.out.println(cookiez.getCookies()); //there are no cookies =(
                             if (data.getInt("subject_id") == id){
 
                                 //filteredJSONArray.put(response.getJSONObject(i));
                                 System.out.println(data.getString("name"));
-                                updates.add(data.getString("name"));
+                                sessionTabKeeper.add(data.getInt("id"));
+                                listItems.add(data.getString("name"));
+
 
                             } //after filtering JSONs, take each JSON name value and put into updates.
 
@@ -167,20 +132,17 @@ public class SessionListActivity extends AppCompatActivity {
                             System.out.println("Something went wrong while filtering!");
                         }
                     }
-//                    updateList(listView,"Dynamic Programming");
-//                    recreate();
-                }// works up to here
+                    adapter.notifyDataSetChanged();
+                }
 
                 else{
                     Toast.makeText(getApplicationContext(),"Unable to refresh sessions at the moment",Toast.LENGTH_SHORT).show();
                 }
+
             }
+
         });
-        for (String hello : updates){
-            System.out.println("hello" + hello);
-        }
-        updateList(listView);
-        recreate();
+
     }
 
 }
