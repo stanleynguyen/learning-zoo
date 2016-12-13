@@ -91,7 +91,6 @@ public class SessionListActivity extends AppCompatActivity {
         });
     }
 
-
     public void toIndividualSession(){
         Intent toIndividual = new Intent(this,IndividualSessionActivity.class);
         startActivity(toIndividual);
@@ -114,16 +113,14 @@ public class SessionListActivity extends AppCompatActivity {
                             JSONObject data = response.getJSONObject(i);
 
                             if (data.getInt("subject_id") == id){
-                                System.out.println(response.toString());
                                 lecturerTabKeeper.add(data.getString("lecturer_name"));
                                 classroomTabKeeper.add(data.getString("classroom"));
-                                //System.out.println(data.getString("name"));
+                                System.out.println(data.getString("lecturer_name"));
+
                                 sessionTabKeeper.add(data.getInt("id"));
-//                                listItems.add(data.getString("name"));
                                 listItems.add(listItems.size(),data.getString("name"));
 
                             } //after filtering JSONs, take each JSON name value and put into updates.
-
                         }
                         catch(Exception e) {
                             System.out.println("Something went wrong while filtering!");
@@ -131,7 +128,6 @@ public class SessionListActivity extends AppCompatActivity {
                     }
                     adapter.notifyDataSetChanged();
                 }
-
                 else{
                     Toast.makeText(getApplicationContext(),"Unable to refresh sessions at the moment",Toast.LENGTH_SHORT).show();
                 }

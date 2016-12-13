@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.GridLabelRenderer;
 import com.jjoe64.graphview.ValueDependentColor;
 import com.jjoe64.graphview.series.BarGraphSeries;
 import com.jjoe64.graphview.series.DataPoint;
@@ -55,8 +56,12 @@ public class IndividualSessionActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         ClientUsage grapher = ClientUsage.getClientUsage();
         lecturerName = grapher.getLecturer();
+        lecturer.setText(lecturerName);
         classroomNumber = grapher.getClassroom();
+        classroom.setText(classroomNumber);
         subjectId = grapher.getSubjectId();
+        System.out.println(subjectId);
+        subject.setText(String.valueOf(subjectId));
         grapher.getTopicsForSession(params, new OnJSONArrayResponseCallback() {
             @Override
             public void onJSONArrayResponse(boolean success, JSONArray response) {
@@ -95,16 +100,19 @@ public class IndividualSessionActivity extends AppCompatActivity {
             }
         }
         graph.setTitle("Class Doubts");
-        graph.getGridLabelRenderer().setHorizontalAxisTitle("Topic");
+//        graph.getGridLabelRenderer().setHorizontalAxisTitle("Topic");
+
 //      graph.getViewport().setScalable(true);
         graph.getViewport().setXAxisBoundsManual(true);
         graph.getViewport().setYAxisBoundsManual(true);
         graph.getViewport().setMinY(0.0);
         graph.getViewport().setMaxY(maxY+1);
         graph.getViewport().setMinX(0.0);
-        graph.getViewport().setMaxX((double)dataPointList.size());
+        graph.getViewport().setMaxX((double) dataPointList.size());
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
 
+        //graph.getGridLabelRenderer().setVertical
+        graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL); //remove vertical lines
 //        graph.setTitleTextSize(100);
         DataPoint[] plotz = new DataPoint[dataPointList.size()];
         for (int i = 0;i < dataPointList.size();i++){
@@ -118,6 +126,7 @@ public class IndividualSessionActivity extends AppCompatActivity {
             }
         });
         series.setDrawValuesOnTop(true);
+
         series.setValuesOnTopColor(Color.DKGRAY);
         series.setSpacing(35);
         graph.addSeries(series);
@@ -127,7 +136,11 @@ public class IndividualSessionActivity extends AppCompatActivity {
             public String formatLabel(double value, boolean isValueX) {
 
                 if (isValueX) {
-                    if (plotCounter< topics.size()&& dataPointList.get(plotCounter).getX() == value) {
+                    if (topics.size() == 1){
+                        System.out.println(dataPointList.size());
+                        return topics.get(0);
+                    }
+                    else if (plotCounter< topics.size()&& dataPointList.get(plotCounter).getX() == value) {
                         String currentTopic = topics.get(plotCounter);
                         //topics.remove(0);
                         //compare dataPointList.get(plotCounter).getX to value
