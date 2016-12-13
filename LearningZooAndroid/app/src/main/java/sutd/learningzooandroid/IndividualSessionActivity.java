@@ -91,6 +91,7 @@ public class IndividualSessionActivity extends AppCompatActivity {
         graph.getViewport().setMaxY(maxY+1);
         graph.getViewport().setMinX(0.0);
         graph.getViewport().setMaxX((double)dataPointList.size());
+        graph.setTitleTextSize(14);
         DataPoint[] plotz = new DataPoint[dataPointList.size()];
         for (int i = 0;i < dataPointList.size();i++){
             plotz[i] = dataPointList.get(i);
@@ -107,10 +108,10 @@ public class IndividualSessionActivity extends AppCompatActivity {
                 return Color.rgb((int) data.getX()*255/4, (int) Math.abs(data.getY()*255/6), 100);
             }
         });
-
-        series.setSpacing(35);
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.DKGRAY);
+        series.setSpacing(35);
+
         graph.addSeries(series);
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {

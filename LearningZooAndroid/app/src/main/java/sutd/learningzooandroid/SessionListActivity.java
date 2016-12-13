@@ -110,17 +110,13 @@ public class SessionListActivity extends AppCompatActivity {
                     for(int i=0;i<response.length();i++){
                         try {
                             JSONObject data = response.getJSONObject(i);
-                            //System.out.println(data.toString());
-                            //System.out.println(data.getInt("subject_id"));
-                            //System.out.println(id);
 
                             if (data.getInt("subject_id") == id){
 
-                                //filteredJSONArray.put(response.getJSONObject(i));
-                                System.out.println(data.getString("name"));
+                                //System.out.println(data.getString("name"));
                                 sessionTabKeeper.add(data.getInt("id"));
-                                listItems.add(data.getString("name"));
-
+//                                listItems.add(data.getString("name"));
+                                listItems.add(listItems.size(),data.getString("name"));
 
                             } //after filtering JSONs, take each JSON name value and put into updates.
 
