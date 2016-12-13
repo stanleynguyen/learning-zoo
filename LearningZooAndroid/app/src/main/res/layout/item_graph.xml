@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <com.jjoe64.graphview.GraphView
     android:layout_width="match_parent"
-    android:layout_height="200dp"
+    android:layout_height="400dp"
     android:id="@+id/graph"
     android:layout_centerVertical="true"
     android:layout_alignParentLeft="true"

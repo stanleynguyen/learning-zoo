@@ -91,17 +91,12 @@ public class IndividualSessionActivity extends AppCompatActivity {
         graph.getViewport().setMaxY(maxY+1);
         graph.getViewport().setMinX(0.0);
         graph.getViewport().setMaxX((double)dataPointList.size());
-        graph.setTitleTextSize(14);
+//        graph.setTitleTextSize(100);
         DataPoint[] plotz = new DataPoint[dataPointList.size()];
         for (int i = 0;i < dataPointList.size();i++){
             plotz[i] = dataPointList.get(i);
         }
         BarGraphSeries<DataPoint> series = new BarGraphSeries<>(plotz);
-//        new DataPoint[] {
-//                new DataPoint(0, 1),
-//                new DataPoint(1, 5),
-//                new DataPoint(2, 3)
-//        });
         series.setValueDependentColor(new ValueDependentColor<DataPoint>() {
             @Override
             public int get(DataPoint data) {
@@ -111,7 +106,6 @@ public class IndividualSessionActivity extends AppCompatActivity {
         series.setDrawValuesOnTop(true);
         series.setValuesOnTopColor(Color.DKGRAY);
         series.setSpacing(35);
-
         graph.addSeries(series);
 
         graph.getGridLabelRenderer().setLabelFormatter(new DefaultLabelFormatter() {
