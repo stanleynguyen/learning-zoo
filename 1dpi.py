@@ -47,7 +47,8 @@ def json_request(url, data): # not used, for reference
 def get_request(relative_url):
     url = server_url + relative_url
     try:
-        response = urllib2.urlopen(url, timeout=10)
+        response = urllib2.urlopen(url, timeout=10).read()
+        print relative_url, " : ", response # DEBUG
     except Exception as e:
         print e
         return None
@@ -127,9 +128,11 @@ while True:
     GPIO.output(led, GPIO.LOW) # DEBUG
     if button_pressed:
         topics = get_topics(current_session_id)
+        print "Button pressed. Topics: ", topics # DEBUG
         if topics and last_pressed_topic_id != topics[-1]["id"]:
             last_pressed_topic_id = topics[-1]["id"]
             increment_topic(last_pressed_topic_id)
+            print "Incremented topic: ", last_pressed_topic_id # DEBUG
             GPIO.output(led, GPIO.HIGH) # DEBUG
         sleep(2.5) # lazy blocking.
     
