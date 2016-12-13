@@ -4,6 +4,7 @@ import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.DefaultLabelFormatter;
@@ -32,11 +33,20 @@ public class IndividualSessionActivity extends AppCompatActivity {
     protected ArrayList<String> topics = new ArrayList<String>();
     protected ArrayList<DataPoint> dataPointList = new ArrayList<DataPoint>();
     protected int plotCounter = 0;
+    protected String lecturerName;
+    protected TextView lecturer;
+    protected String classroomNumber;
+    protected TextView classroom;
+    protected TextView subject;
+    protected int subjectId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_individual_session);
         graph = (GraphView) findViewById(R.id.includegraph);
+        lecturer = (TextView) findViewById(R.id.lecturer);
+        classroom = (TextView) findViewById(R.id.classroom);
+        subject = (TextView) findViewById(R.id.subjectid);
         getGraphInfo();
 
     }
@@ -44,6 +54,9 @@ public class IndividualSessionActivity extends AppCompatActivity {
     public void getGraphInfo(){
         RequestParams params = new RequestParams();
         ClientUsage grapher = ClientUsage.getClientUsage();
+        lecturerName = grapher.getLecturer();
+        classroomNumber = grapher.getClassroom();
+        subjectId = grapher.getSubjectId();
         grapher.getTopicsForSession(params, new OnJSONArrayResponseCallback() {
             @Override
             public void onJSONArrayResponse(boolean success, JSONArray response) {
@@ -55,7 +68,6 @@ public class IndividualSessionActivity extends AppCompatActivity {
                         try {
 
                             JSONObject data = response.getJSONObject(i);
-                            System.out.println(response.toString());
                             topics.add(data.getString("name"));
                             int buttonPress = data.getInt("std_unclear");
                             dataPointList.add(new DataPoint(i+0.5,buttonPress));
@@ -91,6 +103,8 @@ public class IndividualSessionActivity extends AppCompatActivity {
         graph.getViewport().setMaxY(maxY+1);
         graph.getViewport().setMinX(0.0);
         graph.getViewport().setMaxX((double)dataPointList.size());
+        graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
+
 //        graph.setTitleTextSize(100);
         DataPoint[] plotz = new DataPoint[dataPointList.size()];
         for (int i = 0;i < dataPointList.size();i++){

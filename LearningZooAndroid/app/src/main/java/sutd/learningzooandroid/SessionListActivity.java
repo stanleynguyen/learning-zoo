@@ -35,7 +35,8 @@ public class SessionListActivity extends AppCompatActivity {
     protected ArrayList<Cookie> cookieList;
 
     protected ArrayList<Integer> sessionTabKeeper = new ArrayList<Integer>();
-
+    protected ArrayList<String> classroomTabKeeper = new ArrayList<String>();
+    protected ArrayList<String> lecturerTabKeeper = new ArrayList<String>();
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
 
@@ -83,7 +84,8 @@ public class SessionListActivity extends AppCompatActivity {
                 //Toast.makeText(_this,"position: " + position, Toast.LENGTH_SHORT).show();
                 ClientUsage idSet = ClientUsage.getClientUsage();
                 idSet.setSessionId(sessionTabKeeper.get(position)); //check if index starts 1
-
+                idSet.setClassroomId(classroomTabKeeper.get(position));
+                idSet.setLecturer(lecturerTabKeeper.get(position));
                 toIndividualSession();
             }
         });
@@ -112,7 +114,9 @@ public class SessionListActivity extends AppCompatActivity {
                             JSONObject data = response.getJSONObject(i);
 
                             if (data.getInt("subject_id") == id){
-
+                                System.out.println(response.toString());
+                                lecturerTabKeeper.add(data.getString("lecturer_name"));
+                                classroomTabKeeper.add(data.getString("classroom"));
                                 //System.out.println(data.getString("name"));
                                 sessionTabKeeper.add(data.getInt("id"));
 //                                listItems.add(data.getString("name"));

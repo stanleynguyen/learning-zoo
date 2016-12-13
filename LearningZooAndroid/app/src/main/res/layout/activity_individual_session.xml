@@ -12,5 +12,23 @@
     <include
         layout="@layout/item_graph"
         android:id="@+id/includegraph"/>
+    <TextView
+        android:id="@+id/classroom"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/classroom"
+        />
+    <TextView
+        android:id="@+id/lecturer"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/lecturer"
+        />
+    <TextView
+        android:id="@+id/subjectid"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:text="@string/subjectid"
+    />
 
 </RelativeLayout>

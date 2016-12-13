@@ -54,6 +54,9 @@ class ClientUsage {
     private static int subject_id;
     private static int session_id;
     private static DataPoint[] dataPointList;
+    private static String classroom;
+    private static String lecturer;
+
     public static ClientUsage getClientUsage(){ //one for the whole thing
         if (instance==null){
             instance = new ClientUsage();
@@ -82,6 +85,21 @@ class ClientUsage {
 
     public DataPoint[] getDataPointArray(){
         return dataPointList;
+    }
+
+    public void setClassroomId(String cid){
+        classroom = cid;
+    }
+
+    public void setLecturer(String lect){
+        lecturer = lect;
+    }
+
+    public String getClassroom(){
+        return classroom;
+    }
+    public String getLecturer(){
+        return lecturer;
     }
 
     private ClientUsage(){

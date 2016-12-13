@@ -29,6 +29,7 @@
     <string name="hint_subjectid">Subject ID</string>
     <string name="session">Subject sessions</string>
     <string name="go_back">Go Back</string>
-
-
+    <string name="classroom">Classroom: xxx</string>
+    <string name="lecturer">Lecturer name: xxx</string>
+    <string name="subjectid">Subject ID: xxx</string>
 </resources>
