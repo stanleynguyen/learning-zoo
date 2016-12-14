@@ -56,12 +56,12 @@ public class IndividualSessionActivity extends AppCompatActivity {
         RequestParams params = new RequestParams();
         ClientUsage grapher = ClientUsage.getClientUsage();
         lecturerName = grapher.getLecturer();
-        lecturer.setText(lecturerName);
+        lecturer.setText("Lecturer: " + lecturerName);
         classroomNumber = grapher.getClassroom();
-        classroom.setText(classroomNumber);
+        classroom.setText("Classroom: " + classroomNumber);
         subjectId = grapher.getSubjectId();
         System.out.println(subjectId);
-        subject.setText(String.valueOf(subjectId));
+        subject.setText("Subject ID: " + String.valueOf(subjectId));
         grapher.getTopicsForSession(params, new OnJSONArrayResponseCallback() {
             @Override
             public void onJSONArrayResponse(boolean success, JSONArray response) {
@@ -136,11 +136,11 @@ public class IndividualSessionActivity extends AppCompatActivity {
             public String formatLabel(double value, boolean isValueX) {
 
                 if (isValueX) {
-                    if (topics.size() == 1){
-                        System.out.println(dataPointList.size());
-                        return topics.get(0);
-                    }
-                    else if (plotCounter< topics.size()&& dataPointList.get(plotCounter).getX() == value) {
+//                    if (topics.size() == 1){
+//                        System.out.println(dataPointList.size());
+//                        return topics.get(0);
+//                    }
+                    if (plotCounter< topics.size()&& dataPointList.get(plotCounter).getX() == value) {
                         String currentTopic = topics.get(plotCounter);
                         //topics.remove(0);
                         //compare dataPointList.get(plotCounter).getX to value
