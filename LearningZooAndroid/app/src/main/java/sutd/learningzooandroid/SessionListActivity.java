@@ -37,6 +37,7 @@ public class SessionListActivity extends AppCompatActivity {
     protected ArrayList<Integer> sessionTabKeeper = new ArrayList<Integer>();
     protected ArrayList<String> classroomTabKeeper = new ArrayList<String>();
     protected ArrayList<String> lecturerTabKeeper = new ArrayList<String>();
+    protected ArrayList<String> sessionNameKeeper = new ArrayList<String>();
     ArrayList<String> listItems = new ArrayList<String>();
     ArrayAdapter<String> adapter;
 
@@ -86,6 +87,7 @@ public class SessionListActivity extends AppCompatActivity {
                 idSet.setSessionId(sessionTabKeeper.get(position)); //check if index starts 1
                 idSet.setClassroomId(classroomTabKeeper.get(position));
                 idSet.setLecturer(lecturerTabKeeper.get(position));
+                idSet.setSessionName(listItems.get(position));
                 toIndividualSession();
             }
         });
@@ -113,6 +115,7 @@ public class SessionListActivity extends AppCompatActivity {
                             JSONObject data = response.getJSONObject(i);
 
                             if (data.getInt("subject_id") == id){
+
                                 lecturerTabKeeper.add(data.getString("lecturer_name"));
                                 classroomTabKeeper.add(data.getString("classroom"));
                                 System.out.println(data.getString("lecturer_name"));

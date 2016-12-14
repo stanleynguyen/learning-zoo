@@ -56,7 +56,7 @@ class ClientUsage {
     private static DataPoint[] dataPointList;
     private static String classroom;
     private static String lecturer;
-
+    private static String sessName;
     public static ClientUsage getClientUsage(){ //one for the whole thing
         if (instance==null){
             instance = new ClientUsage();
@@ -94,7 +94,12 @@ class ClientUsage {
     public void setLecturer(String lect){
         lecturer = lect;
     }
-
+    public void setSessionName(String sess){
+        sessName = sess;
+    }
+    public String getSessionName(){
+        return sessName;
+    }
     public String getClassroom(){
         return classroom;
     }

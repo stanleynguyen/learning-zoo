@@ -3,6 +3,9 @@ package sutd.learningzooandroid;
 import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -40,6 +43,7 @@ public class IndividualSessionActivity extends AppCompatActivity {
     protected TextView classroom;
     protected TextView subject;
     protected int subjectId;
+    protected String toolbarTitle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -48,11 +52,36 @@ public class IndividualSessionActivity extends AppCompatActivity {
         lecturer = (TextView) findViewById(R.id.lecturer);
         classroom = (TextView) findViewById(R.id.classroom);
         subject = (TextView) findViewById(R.id.subjectid);
-        getGraphInfo();
-
+        getGraphInfo(graph);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.include2);
+        setSupportActionBar(toolbar);
+        ClientUsage toolbarHelper = ClientUsage.getClientUsage();
+        toolbarTitle = toolbarHelper.getSessionName();
+        getSupportActionBar().setTitle(toolbarTitle);
     }
 
-    public void getGraphInfo(){
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.individualsessionmenu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+        if (id == R.id.action_refresh2) {
+            recreate();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    public void getGraphInfo(View v){
         RequestParams params = new RequestParams();
         ClientUsage grapher = ClientUsage.getClientUsage();
         lecturerName = grapher.getLecturer();
@@ -60,6 +89,7 @@ public class IndividualSessionActivity extends AppCompatActivity {
         classroomNumber = grapher.getClassroom();
         classroom.setText("Classroom: " + classroomNumber);
         subjectId = grapher.getSubjectId();
+
         System.out.println(subjectId);
         subject.setText("Subject ID: " + String.valueOf(subjectId));
         grapher.getTopicsForSession(params, new OnJSONArrayResponseCallback() {
@@ -110,7 +140,7 @@ public class IndividualSessionActivity extends AppCompatActivity {
         graph.getViewport().setMinX(0.0);
         graph.getViewport().setMaxX((double) dataPointList.size());
         graph.getGridLabelRenderer().setVerticalLabelsVisible(false);
-
+        graph.getGridLabelRenderer().setPadding(50);
         //graph.getGridLabelRenderer().setVertical
         graph.getGridLabelRenderer().setGridStyle(GridLabelRenderer.GridStyle.HORIZONTAL); //remove vertical lines
 //        graph.setTitleTextSize(100);
