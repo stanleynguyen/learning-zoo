@@ -32,7 +32,7 @@ def avg_input():
     for i in range(5):
         sleep(0.01)
         avg += GPIO.input(button)
-    avg = [a/5.0 for a in avg]
+    avg = avg/5.0
     return avg
 
 
@@ -92,10 +92,10 @@ while True:
             continue
         # Initialise end time and topic values.
         # use relative time, because pi internal clock resets.
-        end_date = current_session["end_date"]
+        end_date = datetime.datetime.strptime(current_session["end_date"], "%Y-%m-%dT%H:%M:%S.%fZ")
         if end_date is None:
             end_date = datetime.datetime(1970,1,1)
-        start_date = current_session["start_date"]
+        start_date = datetime.datetime.strptime(current_session["start_date"], "%Y-%m-%dT%H:%M:%S.%fZ")
         if start_date is None:
             start_date = datetime.datetime(1970,1,1)
         session_length = (end_date - start_date).total_seconds()
@@ -111,6 +111,7 @@ while True:
     eta = session_end_time - current_time
     time_since_last_check = current_time - last_check
     if eta <= 600 and time_since_last_check >= 60:
+        last_check = current_time
         classroom =  get_classroom()
         current_session_id = None
         if classroom is not None:
@@ -134,7 +135,7 @@ while True:
             increment_topic(last_pressed_topic_id)
             print "Incremented topic: ", last_pressed_topic_id # DEBUG
             GPIO.output(led, GPIO.HIGH) # DEBUG
-        sleep(2.5) # lazy blocking.
+        sleep(2.9) # lazy blocking.
     
-    sleep(0.5)
+    sleep(0.1)
     continue
