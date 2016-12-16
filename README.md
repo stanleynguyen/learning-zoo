@@ -46,7 +46,7 @@ Reference: [Instruction Manual](./DesktopPlugin/InstructionManual.pdf)
 ### In-class hardware system
 We mount micro-controllers with buttons on class chairs to allow student to express
 their not-understanding by pressing the button. Also, there is a light that would
-light up if enough students do not understand the current topic, to alert the 
+light up if enough students do not understand the current topic, to alert the
 lecturer and thus respond in real time.
 
 ### Data Analytics Application
@@ -114,42 +114,42 @@ the lecturer.
 
 
 
-# Functional prototype and testing
-Sections 4-7 is our functional prototype. They each have instructions for usage 
+## 4. Functional prototype and testing
+The below sections is about our functional prototype. They each have instructions for usage
 and how to test. We have tested the system with 4 raspberry pis as a proof of
 concept and to show that it is scalable to multiple buttons acting independently.
 
 
-## 4. Cloud Server
+### a. Cloud Server
 
-### Tech Stack
+##### Tech Stack
 - [Ruby on Rails](http://rubyonrails.org/)
 - [Postgresql](https://www.postgresql.org/)
 - [Heroku](https://www.heroku.com/)
 
-### How to start
+##### How to start
 The server is up and running at [http://learning-zoo.herokuapp.com/](http://learning-zoo.herokuapp.com/)
 The API documentation can be found [here](./learning-zoo-server/README.md). You
 can try out the API using tools like [Postman](https://www.getpostman.com/)
 
 
 
-## 5. Desktop Plugin
+### b. Desktop Plugin
 
-### Tech Stack
+##### Tech Stack
 - [Microsoft Visual Basic for Application](https://en.wikipedia.org/wiki/Visual_Basic_for_Applications)
 
-### How to start
+##### How to start
 The instruction manual can be found [here](./DesktopPlugin/InstructionManual.pdf)
 
 
 
-## 6. In-class hardware system
+### c. In-class hardware system
 
-### Tech Stack
+##### Tech Stack
 - [Raspberry Pi](https://www.raspberrypi.org/)
 
-### How to start
+##### How to start
 Transferring the [raspberry code](./RaspberryCode/1dpi.py) to your raspberry pi,
 ssh into your raspberry pi, and start the code from your terminal
 ```bash
@@ -169,13 +169,13 @@ instead (assuming that the student does not keep pressing on the new topic).
 
 
 
-## 7. Data Analytics Application
+### d. Data Analytics Application
 
-### Tech Stack
+##### Tech Stack
 - [Java](https://java.com/en/)
 - [Android](https://www.android.com/)
 
-### How to start
+##### How to start
 Load the ./LearningZooAndroid project into your Android SDK and compile it to
 your phone.
 Sample credentials to login to the app:
@@ -187,7 +187,7 @@ Acount 2:```kevin@kevin.com``` Password: ```12345678```
 
 
 
-## 8. Contribution
+## 5. Contribution
 
 ### Getting started
 
@@ -216,7 +216,7 @@ Happy coding!!
 
 
 
-## 9. Acknowledgement
+## 6. Acknowledgement
 
 *SUTD 50.001 Instructors:*
 - Prof. Ngai-Man Cheung
