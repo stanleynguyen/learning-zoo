@@ -161,7 +161,7 @@ python ~/1dpi.py
 Connect the button to Raspberry Pi on GPIO pin 13 and 3.3V. Pressing this button
 will send a post request to server if there is a currently running class.
 
-To account for students who may repeatedly press the button rapidly, one 1 request
+To account for students who may repeatedly press the button rapidly, one request
 is sent to the server per topic per button. Also, after a single button press,
 the pi waits for 3s so that if the topic might have changed while the student is
 pressing rapidly, it is unlikely that it would accidentally trigger the next topic
