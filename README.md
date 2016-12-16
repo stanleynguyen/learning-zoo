@@ -214,9 +214,15 @@ Happy coding!!
 * [Sprint Planning](docs/sprintplanning.md)
 * [Android Style Guide](https://github.com/ribot/android-guidelines)
 
+## 6. Team Members
+- Dominic Ong
+- Eric Teo
+- Kevin Tan
+- Shaun Yee
+- Tasya Aditya Rukmana
+- Stanley Nguyen The Hung
 
-
-## 6. Acknowledgement
+## 7. Acknowledgement
 
 *SUTD 50.001 Instructors:*
 - Prof. Ngai-Man Cheung
