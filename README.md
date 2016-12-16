@@ -9,7 +9,9 @@ An in-class understanding tracking system
 - Students ask questions that majority of the class already captured, which wastes the class and lecturer's time
 - Lecturers have no way to get analytics on whether their lessons are interesting, well-paced, easy to understand
 
-## 2. Overview of the system:
+
+
+## 2. System design (System overview)
 
 ### How it works
 LearningZoo is designed for students to discreetly give feedback to the lecturer
@@ -43,7 +45,9 @@ Reference: [Instruction Manual](./DesktopPlugin/InstructionManual.pdf)
 
 ### In-class hardware system
 We mount micro-controllers with buttons on class chairs to allow student to express
-their not-understanding by pressing the button
+their not-understanding by pressing the button. Also, there is a light that would
+light up if enough students do not understand the current topic, to alert the 
+lecturer and thus respond in real time.
 
 ### Data Analytics Application
 Instructors can use the app to access the history of all classes that they taught
@@ -51,11 +55,70 @@ and view the students' responses (e.g. how many people did not understand which
 topic).
 Reference: [Detailed documentation](./LearningZooAndroid/README.md)
 
-## 3. Technical Analysis of the System
-### Cloud Server
-### Desktop plugin
-### In-class hardware system
-### Data Analytics Application
+## 3. Analysis of System.
+
+### IoT components
+
+The System is designed using 4 main components:
+ * Cloud Server
+ * Desktop plugin
+ * In-class hardware system
+ * Data Analytics Application
+
+The In-class hardware system is a distributed network of sensors, for students to
+trigger and thus alert the lecturer. This network of sensors and the LED light
+act as the "things" in IOT.
+
+Also, the Desktop plugin turns the lecturer's computer into another "thing" that
+senses data. It automatically tracks the progress of the lesson after the topics
+are set up on slides.
+
+The data is fed to the server, which acts as the central link connecting all
+the other components. This, is the "internet" which the devices are connected to.
+These data allows the In-class hardware system to coordinate itself with respect
+to the lesson. The In-class hardware system functions not only as sensors, but also
+as actuators, to control the sensor output (e.g. presses are only recorded once per
+button on the active topic). As well as the LED light. There is also a LED light
+to inform the lecturer.
+
+The data also drives the Data Analytics Application for the lecturer to view
+feedback on his lesson.
+
+### Data analytics
+
+Currently, the In-class hardware system records button presses per topic, and the
+Data Analytics Application aggregates the data for display. The lecturer can thus
+view formatted data to derive conclusions. Currently, the lecturer only has a vague
+idea of "number of students who don't understand" based on class response.
+
+These data is also used to activate the LED light alert when a treshold is reached
+(currently 50%). Due to not having any data available currently, we cannot use data
+analytics algorithms to determine the most suitable treshold. However, all the data
+is stored in the server. In future, all these data can be aggregated to determine
+an optimal treshold as well as to provide insight on patterns between various classes.
+
+### User interaction and user friendliness
+
+The In-class hardware prototype is currently designed as a button to be attached
+on the button of chair armrests so that it can be conveniently pressed by the student,
+and yet not easy to accidentally press.
+
+From the prespective of the lecturer, the only added work is to assign topics to
+slides for the lesson. Afterwards, everything runs under the scenes and data is
+collected automatically.
+
+This convenient and extremely simple interaction ensures that this solution will
+not disrupt the lesson, but only serve to complement it, thus suiting the intended
+application of providing a non-disruptive means for students to communicate to
+the lecturer.
+
+
+
+# Functional prototype and testing
+Sections 4-7 is our functional prototype. They each have instructions for usage 
+and how to test. We have tested the system with 4 raspberry pis as a proof of
+concept and to show that it is scalable to multiple buttons acting independently.
+
 
 ## 4. Cloud Server
 
@@ -69,6 +132,8 @@ The server is up and running at [http://learning-zoo.herokuapp.com/](http://lear
 The API documentation can be found [here](./learning-zoo-server/README.md). You
 can try out the API using tools like [Postman](https://www.getpostman.com/)
 
+
+
 ## 5. Desktop Plugin
 
 ### Tech Stack
@@ -76,6 +141,8 @@ can try out the API using tools like [Postman](https://www.getpostman.com/)
 
 ### How to start
 The instruction manual can be found [here](./DesktopPlugin/InstructionManual.pdf)
+
+
 
 ## 6. In-class hardware system
 
@@ -94,6 +161,14 @@ python ~/1dpi.py
 Connect the button to Raspberry Pi on GPIO pin 13 and 3.3V. Pressing this button
 will send a post request to server if there is a currently running class.
 
+To account for students who may repeatedly press the button rapidly, one 1 request
+is sent to the server per topic per button. Also, after a single button press,
+the pi waits for 3s so that if the topic might have changed while the student is
+pressing rapidly, it is unlikely that it would accidentally trigger the next topic
+instead (assuming that the student does not keep pressing on the new topic).
+
+
+
 ## 7. Data Analytics Application
 
 ### Tech Stack
@@ -111,9 +186,8 @@ Password: ```12345678```
 Acount 2:```kevin@kevin.com``` Password: ```12345678```
 
 
-## 8. Future Improvement of the System
 
-## 9. Contribution
+## 8. Contribution
 
 ### Getting started
 
@@ -140,7 +214,9 @@ Happy coding!!
 * [Sprint Planning](docs/sprintplanning.md)
 * [Android Style Guide](https://github.com/ribot/android-guidelines)
 
-## 10. Acknowledgement
+
+
+## 9. Acknowledgement
 
 *SUTD 50.001 Instructors:*
 - Prof. Ngai-Man Cheung
