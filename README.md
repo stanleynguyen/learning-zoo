@@ -55,7 +55,7 @@ and view the students' responses (e.g. how many people did not understand which
 topic).
 Reference: [Detailed documentation](./LearningZooAndroid/README.md)
 
-## 3. Analysis of System.
+## 3. Analysis of System
 
 ### IoT components
 
@@ -122,12 +122,12 @@ concept and to show that it is scalable to multiple buttons acting independently
 
 ### a. Cloud Server
 
-##### Tech Stack
+#### Tech Stack
 - [Ruby on Rails](http://rubyonrails.org/)
 - [Postgresql](https://www.postgresql.org/)
 - [Heroku](https://www.heroku.com/)
 
-##### How to start
+#### How to start
 The server is up and running at [http://learning-zoo.herokuapp.com/](http://learning-zoo.herokuapp.com/)
 The API documentation can be found [here](./learning-zoo-server/README.md). You
 can try out the API using tools like [Postman](https://www.getpostman.com/)
@@ -136,20 +136,20 @@ can try out the API using tools like [Postman](https://www.getpostman.com/)
 
 ### b. Desktop Plugin
 
-##### Tech Stack
+#### Tech Stack
 - [Microsoft Visual Basic for Application](https://en.wikipedia.org/wiki/Visual_Basic_for_Applications)
 
-##### How to start
+#### How to start
 The instruction manual can be found [here](./DesktopPlugin/InstructionManual.pdf)
 
 
 
 ### c. In-class hardware system
 
-##### Tech Stack
+#### Tech Stack
 - [Raspberry Pi](https://www.raspberrypi.org/)
 
-##### How to start
+#### How to start
 Transferring the [raspberry code](./RaspberryCode/1dpi.py) to your raspberry pi,
 ssh into your raspberry pi, and start the code from your terminal
 ```bash
@@ -171,11 +171,11 @@ instead (assuming that the student does not keep pressing on the new topic).
 
 ### d. Data Analytics Application
 
-##### Tech Stack
+#### Tech Stack
 - [Java](https://java.com/en/)
 - [Android](https://www.android.com/)
 
-##### How to start
+#### How to start
 Load the ./LearningZooAndroid project into your Android SDK and compile it to
 your phone.
 Sample credentials to login to the app:
